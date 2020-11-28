@@ -34,7 +34,7 @@
 
 
     <TextView
-        android:id="@+id/better"
+        android:id="@+id/discuss"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/isp_speed_up"
@@ -44,7 +44,7 @@
         android:textSize="20dp"
         android:textColor="@color/white"
         android:background="@drawable/btn_rounded"
-        android:text="View Stats"/>
+        android:text="Discuss Issues"/>
 
 
 

@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,33 +55,6 @@ public class SearchNetworkActivity extends AppCompatActivity {
         progressDialog.show();
 
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("Company").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot messageSnapshot: snapshot.getChildren()){
-                    noofUsersMap.put(messageSnapshot.child("Name").getValue().toString(),0);
-                    avgRatingMap.put(messageSnapshot.child("Name").getValue().toString(), (float) 0.0);
-                    Log.i("name1",messageSnapshot.child("Name").getValue().toString());
-                    Company company = new Company(
-                            messageSnapshot.child("Name").getValue().toString(),
-                            messageSnapshot.child("url").getValue().toString(),
-                            messageSnapshot.child("photoUrl").getValue().toString(),
-                            messageSnapshot.child("Number").getValue().toString(),
-                            messageSnapshot.child("Address").getValue().toString(),
-                            messageSnapshot.child("TypeofService").getValue().toString(),
-                            messageSnapshot.child("noofUsers").getValue().toString(),
-                            messageSnapshot.child("avgRating").getValue().toString()
-                    );
-                    companyList.add(company);
-                }
-                //Log.i("size",String.valueOf(companyList.size()));
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(SearchNetworkActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
-            }
-        });
 
         databaseReference.child("Reviews").orderByChild("locality")
                 .equalTo(Constants.locality).addValueEventListener(new ValueEventListener() {
@@ -89,12 +63,18 @@ public class SearchNetworkActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot messageSnapshot: snapshot.getChildren()) {
                     //Toast.makeText(getApplicationContext(),messageSnapshot.child("isp_Name").getValue().toString(),Toast.LENGTH_SHORT).show();
+                    if(!noofUsersMap.containsKey(messageSnapshot.child("isp_Name").getValue().toString()))
+                        noofUsersMap.put(messageSnapshot.child("isp_Name").getValue().toString(),0);
+
+                    if(!avgRatingMap.containsKey(messageSnapshot.child("isp_Name").getValue().toString()))
+                         avgRatingMap.put(messageSnapshot.child("isp_Name").getValue().toString(), (float) 0.0); // initialize hash map
+
                     ReviewDetails review = new ReviewDetails(
                             messageSnapshot.child("isp_Name").getValue().toString(),
                             messageSnapshot.child("userEmail").getValue().toString(),
                             messageSnapshot.child("overallRating").getValue().toString(),
                             messageSnapshot.child("feedback").getValue().toString());
-                    Log.i("name",messageSnapshot.child("isp_Name").getValue().toString());
+                    //Log.i("name",messageSnapshot.child("isp_Name").getValue().toString());
 
                     if(noofUsersMap.containsKey(messageSnapshot.child("isp_Name").getValue().toString())) {
                         //Log.i("name", noofUsersMap.get(messageSnapshot.child("isp_Name").getValue().toString()).toString());
@@ -109,21 +89,33 @@ public class SearchNetworkActivity extends AppCompatActivity {
                                         + Float.parseFloat(messageSnapshot.child("overallRating").getValue().toString())
                         );
                     }
+
                     reviewDetailsList.add(review);
                 }
 
-                for(Company company : companyList){
-                    avgRatingMap.put(company.getName(),
-                            avgRatingMap.get(company.getName())/noofUsersMap.get(company.getName()));
-                    company.setAvgRating(avgRatingMap.get(company.getName()).toString());
-                    company.setNoofUsers(noofUsersMap.get(company.getName()).toString()); // update calculated values of avgRating and noofUsers
+
+                for(Map.Entry<String,Integer> entry : noofUsersMap.entrySet()){
+                    Company company = new Company(
+                            entry.getKey(),
+                            noofUsersMap.get(entry.getKey()).toString(),
+                            String.valueOf(avgRatingMap.get(entry.getKey())/noofUsersMap.get(entry.getKey()))
+                    );
+                    companyList.add(company);
                 }
+
+                companyList.sort(new Comparator<Company>() {
+                    @Override
+                    public int compare(Company o1, Company o2) {
+                        float one = Float.parseFloat(o1.getAvgRating());
+                        float two = Float.parseFloat(o2.getAvgRating());
+                        return  (int)one > (int) two ?0:1;
+                    }
+                });
 
                 progressDialog.dismiss();
                 initCompanyRecyclerView();
                 initReviewRecyclerView();
             }
-
 
 
             @Override

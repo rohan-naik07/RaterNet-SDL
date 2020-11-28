@@ -10,6 +10,12 @@ public class Company {
     private String noofUsers;
     private String  avgRating;
 
+    public Company(String name, String noofUsers, String avgRating) {
+        Name = name;
+        this.noofUsers = noofUsers;
+        this.avgRating = avgRating;
+    }
+
     public Company(String name,
                    String url, String photoUrl, String number, String address, String typeofService, String noofUsers, String avgRating) {
         Name = name;

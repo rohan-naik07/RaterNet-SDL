@@ -1,5 +1,6 @@
 package com.example.raternet_isp_app.adapter;
 
+import android.os.Build;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.raternet_isp_app.R;
@@ -20,12 +22,13 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class DiscussAdapter extends FirebaseRecyclerAdapter<Discussion,DiscussAdapter.DiscussViewHolder>
 {
-    public FirebaseAuth firebaseAuth;
+
     public DiscussAdapter(@NonNull FirebaseRecyclerOptions<Discussion> options) {
         super(options);
-        firebaseAuth = FirebaseAuth.getInstance();
+
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onBindViewHolder(@NonNull DiscussViewHolder holder,
                                     int position,
@@ -35,10 +38,6 @@ public class DiscussAdapter extends FirebaseRecyclerAdapter<Discussion,DiscussAd
         holder.userEmail.setText(model.getUserEmail());
         holder.issueType.setText(model.getIssueType());
         holder.issueTitle.setText(model.getIssueTitle());
-        if(firebaseAuth.getCurrentUser().getEmail().equals(model.getUserEmail()))
-            holder.issueTitle.setGravity(Gravity.RIGHT);
-        else
-            holder.issueTitle.setGravity(Gravity.LEFT);
     }
 
     @NonNull

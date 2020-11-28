@@ -17,8 +17,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.raternet_isp_app.auth_preferences.SaveSharedPreferences;
-import com.example.raternet_isp_app.models.Company;
+import com.example.raternet_isp_app.CreateDiscussionActivity;
 import com.example.raternet_isp_app.models.Constants;
 import com.example.raternet_isp_app.R;
 import com.example.raternet_isp_app.SearchNetworkActivity;
@@ -26,20 +25,7 @@ import com.example.raternet_isp_app.endpoints.GetDataService;
 import com.example.raternet_isp_app.motionlisteners.OnSwipeTouchListener;
 import com.example.raternet_isp_app.network.RetrofitClientInstance;
 import com.example.raternet_isp_app.network.RetrofitClientInstance2;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.google.gson.JsonObject;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -101,6 +87,7 @@ public class ISPInfo extends Fragment implements View.OnClickListener{
         });
         getView().findViewById(R.id.btnSearchNetwork).setOnClickListener(this);
         getView().findViewById(R.id.Refresh).setOnClickListener(this);
+        getView().findViewById(R.id.discuss).setOnClickListener(this);
     }
 
     @Override
@@ -199,6 +186,8 @@ public class ISPInfo extends Fragment implements View.OnClickListener{
             case R.id.Refresh :
                 ispDetails.setVisibility(View.VISIBLE);
                 break;
+            case R.id.discuss:
+                startActivity(new Intent(getContext(), CreateDiscussionActivity.class));
             default: break;
         }
     }

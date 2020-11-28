@@ -29,14 +29,7 @@ private List<Company> companyList;
 public CompanyAdapter(Context context, List<Company> companyList) {
         this.context = context;
         this.companyList = companyList;
-        this.companyList.sort(new Comparator<Company>() {
-            @Override
-            public int compare(Company o1, Company o2) {
-                float one = Float.parseFloat(o1.getAvgRating());
-                float two = Float.parseFloat(o2.getAvgRating());
-                return  (int)one < (int) two ?0:1;
-            }
-        });
+
 }
 
 
@@ -55,11 +48,7 @@ public void onBindViewHolder(@NonNull CompanyViewHolder holder, int position) {
                 ?" User in your Area":" Users in your Area";
         holder.noofUsers.setText(company.getNoofUsers() + line);
         holder.overallCompanyRating.setRating(Float.parseFloat(company.getAvgRating().toString()));
-        String imageUrl = company.getPhotoUrl();
-        final float scale = context.getResources().getDisplayMetrics().density;
-        int Width  = (int) (120 * scale);
-        int Height = (int) (120 * scale);
-        Picasso.with(context).load(imageUrl).resize(Width,Height).into(holder.companyImage);
+        holder.companyImage.setText(String.valueOf(position+1));
 }
 
 @Override
@@ -70,7 +59,7 @@ public int getItemCount() {
 public class CompanyViewHolder extends RecyclerView.ViewHolder{
     TextView companyName,noofUsers;
     RatingBar overallCompanyRating;
-    ImageView companyImage;
+    TextView companyImage;
 
     public CompanyViewHolder(@NonNull View itemView) {
         super(itemView);

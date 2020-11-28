@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.raternet_isp_app.adapter.DiscussAdapter;
 import com.example.raternet_isp_app.models.Constants;
@@ -21,16 +22,15 @@ public class DiscussActivity extends AppCompatActivity implements View.OnClickLi
     public RecyclerView discussRecView;
     public DiscussAdapter adapter;
 
-    public Button btnNewDiscussion;
+    public TextView isp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discuss);
 
-        btnNewDiscussion=findViewById(R.id.btnNewDiscussion);
-
-        btnNewDiscussion.setOnClickListener(this);
+        isp=findViewById(R.id.btnNewDiscussion);
+        isp.setText(Constants.ISP_Name);
 
         discussRecView=findViewById(R.id.discussRecView);
         discussRecView.setLayoutManager(new LinearLayoutManager(this));
@@ -38,7 +38,7 @@ public class DiscussActivity extends AppCompatActivity implements View.OnClickLi
         FirebaseRecyclerOptions<Discussion> options =
                 new FirebaseRecyclerOptions.Builder<Discussion>()
                         .setQuery(FirebaseDatabase.getInstance().getReference()
-                                .child("Discussions").orderByChild("locality").equalTo(Constants.locality), Discussion.class)
+                                .child("Discussions").orderByChild("isp").equalTo(Constants.ISP_Name), Discussion.class)
                         .build();
 
         adapter=new DiscussAdapter(options);

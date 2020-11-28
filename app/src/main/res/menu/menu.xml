@@ -24,7 +24,7 @@
                         android:icon="@drawable/ic_baseline_update_24"/>
                     <item
                         android:id="@+id/drawer_discuss"
-                        android:title="Discuss"
+                        android:title="Discussions"
                         android:icon="@drawable/ic_baseline_group_24"/>
                 </group>
             </menu>
