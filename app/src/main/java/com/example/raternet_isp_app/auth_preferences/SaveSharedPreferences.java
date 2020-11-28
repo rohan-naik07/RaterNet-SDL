@@ -28,6 +28,16 @@ public class SaveSharedPreferences {
         return gson.fromJson(getSharedPreferences(ctx).getString("User",""),User.class);
     }
 
+    public static void setReviewCount(Context ctx,int count){
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putInt("count",count);
+        editor.apply();
+    }
+
+    public static int getReviewCount(Context ctx){
+        return getSharedPreferences(ctx).getInt("count",0);
+    }
+
     public static void clearUser(Context ctx)
     {
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();

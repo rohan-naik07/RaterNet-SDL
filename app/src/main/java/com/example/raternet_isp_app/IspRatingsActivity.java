@@ -18,12 +18,17 @@ import android.widget.Toast;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
+import com.example.raternet_isp_app.auth_preferences.SaveSharedPreferences;
 import com.example.raternet_isp_app.models.Constants;
 import com.example.raternet_isp_app.models.ReviewDetails;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -34,7 +39,7 @@ import java.util.Map;
 public class IspRatingsActivity extends AppCompatActivity {
 
     public FirebaseAuth auth;
-
+    public DatabaseReference databaseReference;
     //Insert Review
     public RadioGroup RdoGrpType;
     public RadioButton RdoBtnType;
@@ -189,8 +194,8 @@ public class IspRatingsActivity extends AppCompatActivity {
                                         UserEmail,
                                         type,speedRating,priceRating,serviceRating,overallRating,feedback,reviewDate);
 
-                                FirebaseDatabase.getInstance().getReference("Reviews").
-                                        push().setValue(review).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                databaseReference = FirebaseDatabase.getInstance().getReference("Reviews");
+                                        databaseReference.push().setValue(review).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if(task.isSuccessful())
@@ -209,6 +214,19 @@ public class IspRatingsActivity extends AppCompatActivity {
                                         }
                                     }
                                 });
+                                databaseReference.orderByChild("userEmail").equalTo(UserEmail).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        int count = (int) snapshot.getChildrenCount();
+                                        SaveSharedPreferences.setReviewCount(IspRatingsActivity.this,count);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        Toast.makeText(IspRatingsActivity.this,error.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
                             } else {
 
                                 //Updating Review

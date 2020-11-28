@@ -31,6 +31,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.io.ByteArrayOutputStream;
 
@@ -51,6 +52,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private static final int CAMERA_REQUEST_CODE=1;
     private static final int OPEN_GALLERY_CODE=2;
     private FirebaseAuth auth;
+    private FirebaseStorage firebaseStorage;
     private AwesomeValidation awesomeValidation;
 
     @Override
@@ -71,6 +73,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         //setProfilePic = findViewById(R.id.setProfilePic);
 
         auth=FirebaseAuth.getInstance();
+        firebaseStorage = FirebaseStorage.getInstance();
 
         awesomeValidation=new AwesomeValidation(ValidationStyle.BASIC);
 
@@ -228,6 +231,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             imageView.setImageURI(mImageUri);// set captured image in imageView
         }
     }
+    //dhoni11
 
     private boolean checkPassLength()
     {

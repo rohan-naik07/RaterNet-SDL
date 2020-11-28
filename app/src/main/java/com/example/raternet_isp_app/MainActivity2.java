@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.raternet_isp_app.Fragments.Profile;
 import com.example.raternet_isp_app.auth_preferences.SaveSharedPreferences;
 import com.example.raternet_isp_app.models.Constants;
 import com.example.raternet_isp_app.models.User;
@@ -36,6 +37,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
     private NavigationView navigationView;
     private View headerView;
     private Uri imageUri;
+    private Profile profile;
     public static final int GALLERY_KITKAT_INTENT_CALLED = 2;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -123,6 +125,9 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                 startActivity(new Intent(MainActivity2.this,DiscussActivity.class));
                 this.finish();
                 break;
+            case R.id.drawer_profile:
+                profile = new Profile(currentUser,this);
+                profile.showProfileDialog();
             default:
                 return true;
         }
@@ -132,6 +137,9 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
     @Override
     public void onBackPressed ()
     {
+        if(profile!=null){
+            profile.clearProfileDialog();
+        }
         this.finishAffinity();
     }
 

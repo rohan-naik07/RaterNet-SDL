@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="false"
@@ -17,7 +18,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".CreateDiscussionActivity"></activity>
+        <activity android:name=".CreateDiscussionActivity" />
         <activity android:name=".DiscussActivity" />
         <activity android:name=".SearchNetworkActivity" />
         <activity android:name=".ViewReviewActivity" />
