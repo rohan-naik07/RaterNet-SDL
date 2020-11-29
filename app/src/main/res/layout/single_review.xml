@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:background="@drawable/btn_rounded"
-                android:layout_marginLeft="100dp"
+                android:layout_marginLeft="150dp"
                 android:src="@drawable/ic_baseline_delete_24"
                 />
 
