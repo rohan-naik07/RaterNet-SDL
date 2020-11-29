@@ -5,8 +5,7 @@ public class Constants
     public static String ISP_Name=null;
     public static String MAP_Latitude=null;
     public static String MAP_Longitude=null;
-    public static Double ISP_Latitude=null;
-    public static Double ISP_Longitude=null;
+    public static String address = null;
     public static String city = null;
     public static String locality = null;
 

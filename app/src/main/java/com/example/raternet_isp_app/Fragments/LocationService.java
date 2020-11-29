@@ -100,6 +100,7 @@ public class LocationService extends Fragment implements OnMapReadyCallback {
         Double latitude = location.getLatitude();
         Double longitude = location.getLongitude();
         //Geocoder geocoder = new Geocoder(getContext());
+
         try {
             //remove marker of old location
             if(markerYourLocation!=null){
@@ -140,6 +141,8 @@ public class LocationService extends Fragment implements OnMapReadyCallback {
         Constants.MAP_Longitude = longitude.toString();
         Constants.city = address.getLocality();
         Constants.locality = address.getSubLocality();
+        String displayAddress = address.getSubLocality()+ " " + address.getLocality() + " " + address.getPostalCode();
+        Constants.address = displayAddress;
 
     }
 

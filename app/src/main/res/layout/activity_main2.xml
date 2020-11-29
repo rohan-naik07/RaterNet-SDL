@@ -13,9 +13,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <fragment
-        android:name="com.example.raternet_isp_app.Fragments.LocationService"
-        android:id="@+id/locationFragment"
+    <FrameLayout
+        android:id="@+id/map_placeholder"
         android:layout_height="match_parent"
         android:layout_width="match_parent"/>
 
@@ -47,10 +46,9 @@
             android:textSize="10dp"
             android:text="Swipe up for more details"/>
 
-        <fragment
-            android:name="com.example.raternet_isp_app.Fragments.ISPInfo"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:id="@+id/ispFragment"
+            android:id="@+id/isp_placeholder"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>

@@ -23,11 +23,12 @@
         android:layout_width="wrap_content"
         android:layout_height="0sp"
         android:layout_gravity="center"
+        android:gravity="center"
         android:layout_weight="25"
         android:paddingHorizontal="5sp"
         android:text="@string/upload_pro_pic"
         android:textAlignment="center"
-        android:textSize="18sp" />
+        android:textSize="10sp" />
 
     <!--    <androidx.core.widget.NestedScrollView-->
     <!--        style="@style/NestedScrollBarStyle"-->
@@ -103,12 +104,6 @@
             android:hint="@string/verify_pass"
             android:inputType="textPassword" />
 
-        <ProgressBar
-            android:id="@+id/progBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone" />
     </LinearLayout>
     <!--    </androidx.core.widget.NestedScrollView>-->
 

@@ -125,14 +125,10 @@ public class ISPInfo extends Fragment implements View.OnClickListener{
                                 ISPView.setText(jsonObject.get("isp").getAsString());
                                 organization.setText(jsonObject.get("as").getAsString());
 
-                                if(Constants.MAP_Longitude!=null && Constants.MAP_Latitude!=null){
-                                    geocoder = new Geocoder(getContext());
-                                    Address address = geocoder.getFromLocation(
-                                            Double.parseDouble(Constants.MAP_Latitude),
-                                            Double.parseDouble(Constants.MAP_Longitude),
-                                            1).get(0);
-                                    String displayAddress = address.getSubLocality()+ " " + address.getLocality() + " " + address.getPostalCode();
-                                    addressView.setText(displayAddress);
+                                if(Constants.address!=null){
+                                    addressView.setText(Constants.address);
+                                } else {
+                                    addressView.setText("Getting address...");
                                 }
 
                             }

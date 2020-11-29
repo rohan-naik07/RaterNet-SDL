@@ -9,10 +9,19 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.raternet_isp_app.IspRatingsActivity;
 import com.example.raternet_isp_app.R;
 import com.example.raternet_isp_app.auth_preferences.SaveSharedPreferences;
 import com.example.raternet_isp_app.models.User;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import androidx.annotation.NonNull;
 
 public class Profile {
    private User user;
@@ -49,8 +58,25 @@ public class Profile {
         name.setText(user.getUserName());
         email.setText(user.getEmailId());
         number.setText(user.getPhoneNumber());
-        reviews.setText(String.valueOf(SaveSharedPreferences.getReviewCount(activity.getApplicationContext())) + " Reviews given" );
+        reviews.setText("Getting your Review Count");
+        setReviewsCount();
         dialog.show();
+    }
+    public void setReviewsCount(){
+        DatabaseReference  databaseReference = FirebaseDatabase.getInstance().getReference("Reviews");
+        databaseReference.orderByChild("userEmail").equalTo(user.getEmailId()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int count = (int) snapshot.getChildrenCount();
+                SaveSharedPreferences.setReviewCount(activity.getApplicationContext(),count);
+                reviews.setText(String.valueOf(count) + " Reviews Given");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(activity.getApplicationContext(),error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
     public void clearProfileDialog(){
         dialog.dismiss();

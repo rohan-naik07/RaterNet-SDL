@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -45,7 +46,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     public Button btnReg,setProfilePic;
     public ImageView imageView;
     public TextView txtRegAlreadyUser;
-    public ProgressBar progBar;
+    public ProgressDialog progressDialog;
     private User user;
     public AlertDialog.Builder dialogBuilder;
     private Uri mImageUri = null;
@@ -68,7 +69,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         btnReg=findViewById(R.id.btnReg);
         txtRegAlreadyUser=findViewById(R.id.txtRegAlreadyUser);
-        progBar=findViewById(R.id.progBar);
         imageView = findViewById(R.id.ProfilePic);
         //setProfilePic = findViewById(R.id.setProfilePic);
 
@@ -81,6 +81,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         awesomeValidation.addValidation(this,R.id.edtRegName, RegexTemplate.NOT_EMPTY,R.string.namerror);
         awesomeValidation.addValidation(this,R.id.edtRegPass,RegexTemplate.NOT_EMPTY,R.string.passerror);
         awesomeValidation.addValidation(this,R.id.edtRegVerifyPass,RegexTemplate.NOT_EMPTY,R.string.passerror);
+
+        progressDialog = new ProgressDialog(RegisterActivity.this);
+        progressDialog.setMessage("Creating an account...");
 
         btnReg.setOnClickListener(this);
         txtRegAlreadyUser.setOnClickListener(this);
@@ -101,12 +104,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         boolean passLen=checkPassLength();
                         if(passLen)//check length of pass (must be >6)
                         {
-                            progBar.setVisibility(View.VISIBLE);
 
                             final String email=edtRegEmailId.getText().toString().trim();
                             final String name=edtRegName.getText().toString().trim();
                             final String phNumber=edtRegPhoneNumber.getText().toString().trim();
                             String pass=edtRegPass.getText().toString().trim();
+
+                            progressDialog.show();
 
                             auth.createUserWithEmailAndPassword(email,pass)
                                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -126,14 +130,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         if(task.isSuccessful())
                                                         {
-                                                            progBar.setVisibility(View.GONE);
+                                                            progressDialog.dismiss();
                                                             Toast.makeText(RegisterActivity.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
                                                             startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
                                                             finish();
                                                         }
                                                         else
                                                         {
-                                                            progBar.setVisibility(View.GONE);
+                                                            progressDialog.dismiss();
                                                             Toast.makeText(RegisterActivity.this, "Registration Failed", Toast.LENGTH_SHORT).show();
                                                         }
                                                     }
@@ -141,7 +145,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                             }
                                             else
                                             {
-                                                progBar.setVisibility(View.GONE);
+                                                progressDialog.dismiss();
                                                 Toast.makeText(RegisterActivity.this, "Registration Failed", Toast.LENGTH_SHORT).show();
                                             }
                                         }
@@ -211,10 +215,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-            String path = MediaStore.Images.Media.insertImage(getApplicationContext().getContentResolver(),
+            imageView.setImageBitmap(bitmap);
+            /*String path = MediaStore.Images.Media.insertImage(getApplicationContext().getContentResolver(),
                     bitmap, "Title", null);
             mImageUri = Uri.parse(path);
-            imageView.setImageURI(mImageUri);
+            imageView.setImageURI(mImageUri);*/ // crashing app
 
         }
         else {

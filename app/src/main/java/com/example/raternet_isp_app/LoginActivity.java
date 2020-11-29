@@ -3,6 +3,7 @@ package com.example.raternet_isp_app;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -34,7 +35,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public EditText edtLogPass;
     public Button btnLog;
     public TextView txtLogNotAUser;
-    public ProgressBar progBar;
+    private ProgressDialog progressDialog;
     private FirebaseAuth auth;
     private AwesomeValidation awesomeValidation;
     private DatabaseReference databaseReference;
@@ -51,14 +52,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnLog=findViewById(R.id.btnLog);
         txtLogNotAUser=findViewById(R.id.txtLogNotAUser);
 
-        progBar=findViewById(R.id.progBar);
-
         auth=FirebaseAuth.getInstance();
 
         awesomeValidation=new AwesomeValidation(ValidationStyle.BASIC);
 
         awesomeValidation.addValidation(this, R.id.edtLogPass, RegexTemplate.NOT_EMPTY, R.string.passerror);
         awesomeValidation.addValidation(this, R.id.edtLogEmailId, Patterns.EMAIL_ADDRESS, R.string.emailerror);
+
+        progressDialog = new ProgressDialog(LoginActivity.this);
+        progressDialog.setMessage("Logging in...");
 
         btnLog.setOnClickListener(this);
         txtLogNotAUser.setOnClickListener(this);
@@ -74,16 +76,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 {
                     String email=edtLogEmailId.getText().toString().trim();
                     String pass=edtLogPass.getText().toString().trim();
-
-                    progBar.setVisibility(View.VISIBLE);
-
                     //Check for already  existing email and wrong password
+                    progressDialog.show();
                     loginUser(email,pass);
                 }
                 else
                 {
+                    progressDialog.dismiss();
                     Toast.makeText(this, "Login Unsuccessful!", Toast.LENGTH_SHORT).show();
                 }
+
                 break;
             case R.id.txtLogNotAUser:
                 Toast.makeText(this, "Redirecting to Registration", Toast.LENGTH_SHORT).show();
@@ -115,12 +117,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                             SaveSharedPreferences.setUser(LoginActivity.this,user);
                             intent = new Intent(LoginActivity.this,MainActivity.class);
+                            progressDialog.dismiss();
                             Toast.makeText(LoginActivity.this, "Successfully Logged In ", Toast.LENGTH_SHORT).show();
                             startActivity(intent);
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
+                            progressDialog.dismiss();
                             Toast.makeText(LoginActivity.this, "Failed to fetch user", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -129,7 +133,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 {
                     Toast.makeText(LoginActivity.this,task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
-                progBar.setVisibility(View.GONE);
             }
         });
     }

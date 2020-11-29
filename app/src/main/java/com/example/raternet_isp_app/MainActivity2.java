@@ -5,6 +5,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -16,6 +18,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.raternet_isp_app.Fragments.ISPInfo;
+import com.example.raternet_isp_app.Fragments.LocationService;
 import com.example.raternet_isp_app.Fragments.Profile;
 import com.example.raternet_isp_app.auth_preferences.SaveSharedPreferences;
 import com.example.raternet_isp_app.models.Constants;
@@ -34,6 +38,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
     private ImageView openDrawer,userPic;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
+    private FragmentTransaction fragmentTransaction;
     private NavigationView navigationView;
     private View headerView;
     private Uri imageUri;
@@ -62,7 +67,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
         btnSearchNetwork = findViewById(R.id.btnSearchNetwork);
 
         btnWriteReview.setOnClickListener(this);
-        btnSearchNetwork.setOnClickListener(this);
+        //btnSearchNetwork.setOnClickListener(this);
 
         currentUser = SaveSharedPreferences.getUser(MainActivity2.this);
         String photoURI = currentUser.getPhotoURL();
@@ -76,6 +81,12 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
         EmailDrawer.setText(currentUser.getEmailId());
         //Setting email in Constants.
         Constants.UserEmail=currentUser.getEmailId();
+
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.map_placeholder,new LocationService());
+        fragmentTransaction.replace(R.id.isp_placeholder,new ISPInfo());
+        fragmentTransaction.commit();
+
         // karan@gmail.com karan345
     }
 
