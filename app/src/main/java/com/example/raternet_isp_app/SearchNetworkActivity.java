@@ -108,7 +108,7 @@ public class SearchNetworkActivity extends AppCompatActivity {
                     public int compare(Company o1, Company o2) {
                         float one = Float.parseFloat(o1.getAvgRating());
                         float two = Float.parseFloat(o2.getAvgRating());
-                        return  (int)one > (int) two ?0:1;
+                        return  (int)one > (int) two ?1:0;
                     }
                 });
 

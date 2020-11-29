@@ -7,30 +7,16 @@
     android:orientation="vertical"
     tools:context=".SearchNetworkActivity">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:layout_margin="10dp"
-        android:orientation="horizontal"
-        android:background="@drawable/btn_rounded3">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_my_second_logo_foreground"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="monospace"
-            android:textColor="@color/colorPrimary"
-            android:text="Your Area Scan"
-            android:layout_marginLeft="-30dp"
-            android:textSize="25dp"
-            android:padding="10dp"
-            android:gravity="center|left"/>
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        android:fontFamily="monospace"
+        android:textColor="@color/colorPrimary"
+        android:text="Your Area Scan"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:padding="10dp"
+        android:gravity="center"/>
 
 <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/betternetworks"
