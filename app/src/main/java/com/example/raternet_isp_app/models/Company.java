@@ -1,6 +1,6 @@
 package com.example.raternet_isp_app.models;
 
-public class Company {
+public class Company implements Comparable<Company>{
     private String Name;
     private String Url;
     private String photoUrl;
@@ -88,7 +88,19 @@ public class Company {
         return avgRating;
     }
 
+    public Integer getAvgRatingasInt(){
+        float avg = Float.parseFloat(avgRating);
+        return (int) avg;
+    }
+
     public void setAvgRating(String avgRating) {
         this.avgRating = avgRating;
+    }
+
+    @Override
+    public int compareTo(Company o) {
+        if(o.getAvgRating()==null || getAvgRating()==null)
+        { return 0; }
+        return getAvgRatingasInt().compareTo(o.getAvgRatingasInt());
     }
 }

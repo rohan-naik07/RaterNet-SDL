@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -103,14 +104,8 @@ public class SearchNetworkActivity extends AppCompatActivity {
                     companyList.add(company);
                 }
 
-                companyList.sort(new Comparator<Company>() {
-                    @Override
-                    public int compare(Company o1, Company o2) {
-                        float one = Float.parseFloat(o1.getAvgRating());
-                        float two = Float.parseFloat(o2.getAvgRating());
-                        return  (int)one > (int) two ?1:0;
-                    }
-                });
+                Collections.sort(companyList);
+                Collections.reverse(companyList);
 
                 progressDialog.dismiss();
                 initCompanyRecyclerView();
